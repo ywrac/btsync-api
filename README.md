@@ -1,5 +1,6 @@
 # btsync-api
-jsonの表示に[jq](http://stedolan.github.io/jq/)を利用しています。
+* オフィシャルドキュメント：<http://www.bittorrent.com/sync/developers/api>
+* jsonの表示に[jq](http://stedolan.github.io/jq/)を利用しています。
 
 ## 使い方
 引数にオフィシャルのメソッド名をくわせる。
@@ -14,3 +15,6 @@ btsync-api add_folders PATH SECRET
 
 ## mac
 mac用のinitスクリプトなどなど
+
+## LICENSE
+"NO COPYRIGHT. NO LICENSE." by [Peter Sunde](http://blog.brokep.com/about/)
