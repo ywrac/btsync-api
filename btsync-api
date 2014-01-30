@@ -1,0 +1,43 @@
+#!/bin/sh
+
+# jq: the json processor is required 
+# http://stedolan.github.io/jq/
+
+###config
+id=admin
+password=password
+server=localhost
+#server=192.168.0.3
+port=14888
+#port=9999
+
+# config=/Users/usr/.btsync/btsync.conf
+# webui=`grep -v '//'< $config | jq '.webui'`
+# id=`echo $webui | jq '.login' | tr -d '\"'`
+# password=`echo $webui | jq '.password' | tr -d '\"'`
+# port=8888
+# server=localhost
+
+###
+
+case $1 in
+    get_prefs | get_version | get_os | get_speed | shutdown )
+	curl -u $id:$password $server:$port/api?method=$1;;
+    get_folders | get_secrets )
+	case $# in
+	    1 ) curl -u $id:$password $server:$port/api?method=$1;;
+	    2 ) curl -u $id:$password $server:$port/api?method=$1\&secret=$2;;
+        esac;;
+    gen_secrets )
+	    curl -u $id:$password $server:$port/api?method=get_secrets\&type=encryption;;
+    remove_folder | get_folder_prefs | get_folder_hosts | get_folder_peers ) 
+	curl -u $id:$password $server:$port/api?method=$1\&secret=$2;;
+    add_folder )
+	case $# in
+	1|2) secret=`btsync-api gen_secrets | jq '.read_write' | tr -d '\"'`;
+	   curl -u $id:$password $server:$port/api?method=$1\&dir=$2\&secret=$secret\&selective_sync=1;;
+	3) curl -u $id:$password $server:$port/api?method=$1\&dir=$2\&secret=$3\&selective_sync=1;;
+	esac;;
+    * )
+	echo 'Error: Check the METHOD';;
+esac | jq '.'

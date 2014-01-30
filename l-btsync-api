@@ -1,0 +1,12 @@
+#!/bin/sh
+id=admin
+pass=password
+port=8888
+server=localhost
+
+case $# in
+    1) curl -u $id:$pass $server:$port/api?method=$1;;
+    2) curl -u $id:$pass $server:$port/api?method=$1\&$2;;
+    3) curl -u $id:$pass $server:$port/api?method=$1\&$2\&$3;;
+    4) curl -u $id:$pass $server:$port/api?method=$1\&$2\&$3\&$4;;
+esac
